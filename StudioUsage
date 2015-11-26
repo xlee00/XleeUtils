@@ -1,0 +1,49 @@
+Android studio 如何提示方法的用法:
+在 Eclipse中鼠标放上去就可以提示方法的用法，实际上Android Studio也可以设置的。
+Preferences > Editor >Generan> Show doc on mouse move:勾选上
+
+
+Android Studio 如何导出和导入设置:
+导出设置：
+选择 File -> Export Settings...，
+然后勾选需要到处的设置项，
+Code Style，File Template， Key maps ，Live Templates 等比较常用的，
+可以自己选择到处后的存放地址，命名为 2015-11-26settings.jar
+
+导入设置：
+选择 File -> Import Settings...，然后选择 2015-11-26settings.jar，
+选择需要导入的模块，点击 OK 即可。
+
+
+教程网址:http://www.open-open.com/lib/view/open1434259074565.html
+Change the automatic author that appears when I create a file in AndroidStudio.
+Press Ctrl+Alt+S then go to File and Code Templates.
+Go to Settings -> File and Code Templates -> Includes
+新建FileInformation
+
+#set( $USER = "Xlee" )
+/**
+ * ${NAME}.java [V 1.0.0]
+ * Classes : ${PACKAGE_NAME}.${NAME}
+ * ${USER} Create at ${DATE} ${TIME}
+ */
+
+Go to Settings -> File and Code Templates -> Includes -> File Header prepend the #set() function call, for example:
+
+#set( $USER = "Xlee" )
+/**
+ * ${package_name}.${type_name}
+ * @author ${USER} <br/>
+ * Create at ${DATE} ${time}
+ */
+
+ 如何引用File Header
+ 创建class时，会自动引用模板，路径在Files-->Settings-->File and Code Templates-->Templates-->class
+
+#parse("FileInformation.java")
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+#parse("File Header.java")
+public class ${NAME} {
+    private static final String TAG = ${NAME}.class.getSimpleName();
+}
+
