@@ -1,4 +1,4 @@
-package com.eric.xlee.utils;
+package com.eric.xlee.activitys;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.eric.xlee.utils.R;
 
 public class MainActivity extends AppCompatActivity {
 
