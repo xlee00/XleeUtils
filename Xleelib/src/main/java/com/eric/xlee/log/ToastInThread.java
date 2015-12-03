@@ -13,7 +13,6 @@ import java.text.MessageFormat;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 /**
  * 在不是主线程的时候无法直接使用toast，但是可以使用该工具类实现toast。当然在主线程的时候也可以使用该类。
@@ -38,7 +37,7 @@ public class ToastInThread {
         activity.runOnUiThread(new Runnable() {
 
             public void run() {
-                ToastSen5labs.makeText(context, resId, duration).show();
+                Toast.makeText(context, resId, duration).show();
             }
         });
     }
@@ -58,7 +57,7 @@ public class ToastInThread {
         activity.runOnUiThread(new Runnable() {
 
             public void run() {
-                ToastSen5labs.makeText(context, message, duration).show();
+                Toast.makeText(context, message, duration).show();
             }
         });
     }
@@ -70,11 +69,11 @@ public class ToastInThread {
         if (context instanceof Activity) {
             ((Activity) context).runOnUiThread(new Runnable() {
                 public void run() {
-                    ToastSen5labs.makeText(context.getApplicationContext(), resId, duration).show();
+                    Toast.makeText(context.getApplicationContext(), resId, duration).show();
                 }
             });
         } else {
-            ToastSen5labs.makeText(context.getApplicationContext(), resId, duration).show();
+            Toast.makeText(context.getApplicationContext(), resId, duration).show();
         }
     }
 
@@ -84,12 +83,12 @@ public class ToastInThread {
         if (context instanceof Activity) {
             ((Activity) context).runOnUiThread(new Runnable() {
                 public void run() {
-                    ToastSen5labs.makeText(context.getApplicationContext(), message, duration).show();
+                    Toast.makeText(context.getApplicationContext(), message, duration).show();
                 }
 
             });
         } else {
-            ToastSen5labs.makeText(context.getApplicationContext(), message, duration).show();
+            Toast.makeText(context.getApplicationContext(), message, duration).show();
         }
     }
 
