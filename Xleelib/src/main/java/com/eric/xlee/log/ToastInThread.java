@@ -19,7 +19,7 @@ import android.widget.Toast;
  * 在不是主线程的时候无法直接使用toast，但是可以使用该工具类实现toast。当然在主线程的时候也可以使用该类。
  *
  * @author Tony Shen
- *         <p>
+ *         <p/>
  *         Create at 26/11/2015 18:48
  */
 public class ToastInThread {
@@ -30,8 +30,7 @@ public class ToastInThread {
      * @param resId    string资源id
      * @param duration
      */
-    private static void showToast(final Activity activity, final int resId,
-                                  final int duration) {
+    private static void showToast(final Activity activity, final int resId, final int duration) {
         if (activity == null)
             return;
 
@@ -39,7 +38,7 @@ public class ToastInThread {
         activity.runOnUiThread(new Runnable() {
 
             public void run() {
-                Toast.makeText(context, resId, duration).show();
+                ToastSen5labs.makeText(context, resId, duration).show();
             }
         });
     }
@@ -49,8 +48,7 @@ public class ToastInThread {
      * @param message  toast的内容
      * @param duration
      */
-    private static void showToast(final Activity activity, final String message,
-                                  final int duration) {
+    private static void showToast(final Activity activity, final String message, final int duration) {
         if (activity == null)
             return;
         if (TextUtils.isEmpty(message))
@@ -60,38 +58,39 @@ public class ToastInThread {
         activity.runOnUiThread(new Runnable() {
 
             public void run() {
-                Toast.makeText(context, message, duration).show();
+                ToastSen5labs.makeText(context, message, duration).show();
             }
         });
     }
 
-    public static void showToast(final Context context, final int resId,
-                                 final int duration) {
+    public static void showToast(final Context context, final int resId, final int duration) {
         if (context == null)
             return;
 
-        ((Activity) context).runOnUiThread(new Runnable() {
-            public void run() {
-                Toast.makeText(context.getApplicationContext(), resId,
-                        duration).show();
-            }
-
-        });
+        if (context instanceof Activity) {
+            ((Activity) context).runOnUiThread(new Runnable() {
+                public void run() {
+                    ToastSen5labs.makeText(context.getApplicationContext(), resId, duration).show();
+                }
+            });
+        } else {
+            ToastSen5labs.makeText(context.getApplicationContext(), resId, duration).show();
+        }
     }
 
-    public static void showToast(final Context context, final String message,
-                                 final int duration) {
+    public static void showToast(final Context context, final String message, final int duration) {
         if (context == null)
             return;
+        if (context instanceof Activity) {
+            ((Activity) context).runOnUiThread(new Runnable() {
+                public void run() {
+                    ToastSen5labs.makeText(context.getApplicationContext(), message, duration).show();
+                }
 
-        ((Activity) context).runOnUiThread(new Runnable() {
-            public void run() {
-                Toast.makeText(context.getApplicationContext(), message,
-                        duration).show();
-            }
-
-        });
-
+            });
+        } else {
+            ToastSen5labs.makeText(context.getApplicationContext(), message, duration).show();
+        }
     }
 
     public static void showLong(final Activity activity, int resId) {
@@ -102,14 +101,12 @@ public class ToastInThread {
         showToast(activity, message, LENGTH_LONG);
     }
 
-    public static void showLong(final Activity activity, final String message,
-                                final Object... args) {
+    public static void showLong(final Activity activity, final String message, final Object... args) {
         String formatted = MessageFormat.format(message, args);
         showToast(activity, formatted, LENGTH_LONG);
     }
 
-    public static void showLong(final Activity activity, final int resId,
-                                final Object... args) {
+    public static void showLong(final Activity activity, final int resId, final Object... args) {
         if (activity == null)
             return;
 
@@ -133,14 +130,12 @@ public class ToastInThread {
         showToast(activity, message, LENGTH_SHORT);
     }
 
-    public static void showShort(final Activity activity, final String message,
-                                 final Object... args) {
+    public static void showShort(final Activity activity, final String message, final Object... args) {
         String formatted = MessageFormat.format(message, args);
         showToast(activity, formatted, LENGTH_SHORT);
     }
 
-    public static void showShort(final Activity activity, final int resId,
-                                 final Object... args) {
+    public static void showShort(final Activity activity, final int resId, final Object... args) {
         if (activity == null)
             return;
 
