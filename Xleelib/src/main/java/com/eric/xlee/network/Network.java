@@ -7,6 +7,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -42,6 +44,18 @@ public class Network {
 
         public int value;
     }
+
+    /**
+     * @param ipaddress
+     * @return
+     */
+    private static boolean isRegularIP(String ipaddress) {
+        Pattern pattern = Pattern
+                .compile("\\b((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\.((?!\\d\\d\\d)\\d+|1\\d\\d|2[0-4]\\d|25[0-5])\\b");
+        Matcher matcher = pattern.matcher(ipaddress);
+        return matcher.matches();
+    }
+
 
     /**
      * 获得本机ip，没有联网 return null

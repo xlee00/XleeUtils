@@ -3,12 +3,15 @@ package com.eric.xlee.util;
 import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -23,12 +26,10 @@ import java.util.List;
 
 /**
  * 读取文件工具类
- * 
+ *
  * @author YINZHIPING
  * @version 1.0, 2012-8-21 上午09:38:01
- * 
  * @(#)FileUitl.java
- * 
  * @Copyright 2012 AngelShine
  */
 public class FileUtils {
@@ -38,30 +39,132 @@ public class FileUtils {
 
     private static String padFilePath = "/sdcard/driver.ini";
 
+    public static final String BITCACHE = "/xlee_thum/";
+    public static final String JSONCACHE = "/json_data/";
+
+    /**
+     * @param @param fileName
+     * @param @param json
+     * @param @param context 设定文件
+     * @return void 返回类型
+     * @throws
+     * @Description: TODO(保存文本文件到本地)
+     */
+    public static void WriteJson2File(String fileName, String json, Context context) {
+        if (TextUtils.isEmpty(fileName) || TextUtils.isEmpty(json)) {
+            return;
+        }
+        FileOutputStream fos = null;
+        try {
+            String path = mkdirs(context, JSONCACHE);
+            if (TextUtils.isEmpty(path)) {
+                throw new IllegalAccessException("sdcard and cache not exist");
+            }
+            File file = new File(path + fileName);
+            if (file.exists()) {
+                file.delete();
+            }
+            fos = new FileOutputStream(file);
+            fos.write(json.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeIO(fos);
+        }
+    }
+
+    /**
+     * @param @param  fileName
+     * @param @param  context
+     * @param @return 设定文件
+     * @return String 返回类型
+     * @throws
+     * @Description: TODO(读取制定名称的文件)
+     */
+    public static String ReadFile2Json(String fileName, Context context) {
+        FileInputStream fio = null;
+        String path = mkdirs(context, JSONCACHE);
+        if (TextUtils.isEmpty(path)) {
+            return null;
+        }
+        File f = new File(path + fileName);
+        if (!f.exists()) {
+            return null;
+        }
+        try {
+            fio = new FileInputStream(f);
+            byte[] buf = new byte[1024];
+            int len = -1;
+            StringBuffer sb = new StringBuffer();
+            while ((len = fio.read(buf, 0, buf.length)) != -1) {
+                sb.append(new String(buf, 0, len));
+            }
+            return sb.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            closeIO(fio);
+        }
+        return null;
+    }
+
+    /**
+     * @param @param  context
+     * @param @return 设定文件
+     * @return String 返回类型
+     * @throws
+     * @Description: TODO(创建图片缓存目录)
+     */
+    public static String mkdirs(Context context) {
+        return mkdirs(context, BITCACHE);
+    }
+
+    /**
+     * @param @param  context
+     * @param @param  dir
+     * @param @return 设定文件
+     * @return String 返回类型
+     * @throws
+     * @Description: TODO(根据文件夹名称创建文件夾)
+     */
+    public static String mkdirs(Context context, String dir) {
+        String path = context.getCacheDir().getAbsolutePath() + dir;
+        File cache = new File(path);
+        if (!cache.exists()) {
+            cache.mkdirs();
+        }
+        return path;
+    }
+
+
     /**
      * 写文本文件 在Android系统中，文件保存在 /data/data/PACKAGE_NAME/files 目录下
-     * 
+     *
      * @param context
      * @param
      */
     public static void write(Context context, String fileName, String content) {
         if (content == null)
             content = "";
-
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos = context.openFileOutput(fileName,
+            fos = context.openFileOutput(fileName,
                     Context.MODE_PRIVATE);
             fos.write(content.getBytes());
 
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            closeIO(fos);
         }
     }
 
     /**
      * 读取文本文件
-     * 
+     *
      * @param context
      * @param fileName
      * @return
@@ -78,19 +181,22 @@ public class FileUtils {
     }
 
     private static String readInStream(FileInputStream inStream) {
+        ByteArrayOutputStream outStream = null;
         try {
-            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            outStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[512];
             int length = -1;
             while ((length = inStream.read(buffer)) != -1) {
                 outStream.write(buffer, 0, length);
             }
 
-            outStream.close();
             inStream.close();
             return outStream.toString();
         } catch (IOException e) {
             // UIHelper.Log("e", "", "FileReadError", true);
+        } finally {
+            closeIO(outStream);
+            closeIO(inStream);
         }
         return null;
     }
@@ -104,15 +210,13 @@ public class FileUtils {
     }
 
     /**
-     * 
-     * 
      * @param buffer
      * @param folder
      * @param fileName
      * @return
      */
     public static boolean writeFile(byte[] buffer, String folder,
-            String fileName) {
+                                    String fileName) {
         boolean writeSucc = false;
 
         boolean sdCardExist = Environment.getExternalStorageState().equals(
@@ -152,7 +256,7 @@ public class FileUtils {
 
     /**
      * 根据文件绝对路径获取文件名
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -164,7 +268,7 @@ public class FileUtils {
 
     /**
      * 根据文件的绝对路径获取文件名但不包含扩展名
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -179,7 +283,7 @@ public class FileUtils {
 
     /**
      * 获取文件扩展名
-     * 
+     *
      * @param fileName
      * @return
      */
@@ -193,7 +297,7 @@ public class FileUtils {
 
     /**
      * 获取文件大小
-     * 
+     *
      * @param filePath
      * @return
      */
@@ -209,9 +313,8 @@ public class FileUtils {
 
     /**
      * 获取文件大小
-     * 
-     * @param size
-     *            字节
+     *
+     * @param size 字节
      * @return
      */
     public static String getFileSize(long size) {
@@ -228,7 +331,7 @@ public class FileUtils {
 
     /**
      * 转换文件大小
-     * 
+     *
      * @param fileS
      * @return B/KB/MB/GB
      */
@@ -249,7 +352,7 @@ public class FileUtils {
 
     /**
      * 获取目录文件大小
-     * 
+     *
      * @param dir
      * @return
      */
@@ -275,7 +378,7 @@ public class FileUtils {
 
     /**
      * 获取目录文件个数
-     * 
+     *
      * @param dir
      * @return
      */
@@ -305,7 +408,7 @@ public class FileUtils {
 
     /**
      * 检查文件是否存在
-     * 
+     *
      * @param name
      * @return
      */
@@ -324,7 +427,7 @@ public class FileUtils {
 
     /**
      * 计算SD卡的剩余空间
-     * 
+     *
      * @return 返回-1，说明没有安装sd卡
      */
     public static long getFreeDiskSpace() {
@@ -348,7 +451,7 @@ public class FileUtils {
 
     /**
      * 新建目录
-     * 
+     *
      * @param directoryName
      * @return
      */
@@ -366,7 +469,7 @@ public class FileUtils {
 
     /**
      * 检查是否安装SD卡
-     * 
+     *
      * @return
      */
     public static boolean checkSaveLocationExists() {
@@ -381,7 +484,7 @@ public class FileUtils {
 
     /**
      * 删除目录(包括：目录里的所有文件)
-     * 
+     *
      * @param fileName
      * @return
      */
@@ -421,7 +524,7 @@ public class FileUtils {
 
     /**
      * 删除文件
-     * 
+     *
      * @param fileName
      * @return
      */
@@ -450,6 +553,25 @@ public class FileUtils {
         return status;
     }
 
+    public static void deleteFile(File file, boolean deleteDirSelf) {
+        if (file.exists()) {
+            if (file.isFile()) {
+                file.delete();
+            } else {
+                File[] files = file.listFiles();
+                if (files != null && files.length > 0) {
+                    for (File childFile : files) {
+                        deleteFile(childFile, true);
+                    }
+                }
+                if (deleteDirSelf) {
+                    file.delete();
+                }
+            }
+        }
+    }
+
+
     /**
      * @param msgID
      * @param msgID
@@ -458,7 +580,7 @@ public class FileUtils {
      * @return
      */
     public static String saveLog(String msgID, String log, boolean isLog,
-            String fileName) {
+                                 String fileName) {
         if (!isLog) {
             return null;
         }
@@ -564,7 +686,7 @@ public class FileUtils {
     }
 
     public static List<File> list(File dir, String nametxt, String ext,
-            String type, List<File> fs) {
+                                  String type, List<File> fs) {
         listFile(dir, nametxt, type, ext, fs);
         File[] all = dir.listFiles();
         // 递归获得当前目录的所有子目录
@@ -579,20 +701,15 @@ public class FileUtils {
     }
 
     /**
-     * @param dir
-     *            根目�?
-     * @param nametxt
-     *            文件名中包含的关键字
-     * @param type
-     *            文件夹的类型
-     * @param ext
-     *            后缀�?
-     * @param fs
-     *            返回的结�?
+     * @param dir     根目�?
+     * @param nametxt 文件名中包含的关键字
+     * @param type    文件夹的类型
+     * @param ext     后缀�?
+     * @param fs      返回的结�?
      * @return
      */
     private static List<File> listFile(File dir, String nametxt, String type,
-            String ext, List<File> fs) {
+                                       String ext, List<File> fs) {
         File[] all = dir.listFiles(new Fileter(ext));
         for (int i = 0; i < all.length; i++) {
             File d = all[i];
@@ -674,7 +791,7 @@ public class FileUtils {
 
     /**
      * 修改文件权限
-     * 
+     *
      * @param file
      */
     public static void modifyFile(File file) {
@@ -686,6 +803,22 @@ public class FileUtils {
             process.waitFor();
         } catch (Exception e) {
 
+        }
+    }
+
+    /**
+     * @param @param ioStream 设定文件
+     * @return void 返回类型
+     * @throws
+     * @Description: TODO(关闭文件流操作)
+     */
+    public static void closeIO(Closeable ioStream) {
+        if (ioStream != null) {
+            try {
+                ioStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
