@@ -79,8 +79,8 @@ public class LogUtil {
 
     public static void v(String paramString1, String paramString2) {
         if (sIsDebug) {
+            Log.v(paramString1, getLogText(paramString2));
         }
-        Log.v(paramString1, getLogText(paramString2));
     }
 
     private static String getLogText(String paramString) {
