@@ -175,22 +175,22 @@ public class VerticalViewPagerDemo extends FragmentActivity {
             if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
             }
             switch (event.getKeyCode()) {
-            case KeyEvent.KEYCODE_DPAD_LEFT:
-                break;
-            case KeyEvent.KEYCODE_DPAD_RIGHT:
-                break;
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                if (verticalViewPagerDemo.getCurrentItem() < mViewPagerAdapter.getCount() - 1) {
-                    verticalViewPagerDemo.setCurrentItem(verticalViewPagerDemo.getCurrentItem() + 1);
-                }
-                break;
-            case KeyEvent.KEYCODE_DPAD_UP:
-                if (verticalViewPagerDemo.getCurrentItem() > 0) {
-                    verticalViewPagerDemo.setCurrentItem(verticalViewPagerDemo.getCurrentItem() - 1);
-                }
-                break;
-            default:
-                break;
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                    break;
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                    break;
+                case KeyEvent.KEYCODE_DPAD_DOWN:
+                    if (verticalViewPagerDemo.getCurrentItem() < mViewPagerAdapter.getCount() - 1) {
+                        verticalViewPagerDemo.setCurrentItem(verticalViewPagerDemo.getCurrentItem() + 1);
+                    }
+                    break;
+                case KeyEvent.KEYCODE_DPAD_UP:
+                    if (verticalViewPagerDemo.getCurrentItem() > 0) {
+                        verticalViewPagerDemo.setCurrentItem(verticalViewPagerDemo.getCurrentItem() - 1);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         return super.dispatchKeyEvent(event);
@@ -220,12 +220,12 @@ public class VerticalViewPagerDemo extends FragmentActivity {
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
             switch (position) {
-            case 0:
-                return "PAGE 1";
-            case 1:
-                return "PAGE 2";
-            case 2:
-                return "PAGE 3";
+                case 0:
+                    return "PAGE 1";
+                case 1:
+                    return "PAGE 2";
+                case 2:
+                    return "PAGE 3";
             }
             return null;
         }
@@ -267,24 +267,5 @@ public class VerticalViewPagerDemo extends FragmentActivity {
             return null;
         }
 
-    }
-
-    long waitTime = 2000;
-    long touchTime = 0;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN && KeyEvent.KEYCODE_BACK == keyCode) {
-            long currentTime = System.currentTimeMillis();
-            if ((currentTime - touchTime) >= waitTime) {
-                Toast.makeText(this, this.getResources().getString(R.string.press_again), Toast.LENGTH_SHORT)
-                        .show();
-                touchTime = currentTime;
-            } else {
-                finish();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

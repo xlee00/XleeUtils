@@ -32,7 +32,7 @@ Go to Settings -> File and Code Templates -> Includes -> File Header prepend the
 
 #set( $USER = "Xlee" )
 /**
- * ${package_name}.${type_name}
+ * ${PACKAGE_NAME}.${NAME}
  * @author ${USER} <br/>
  * Create at ${DATE} ${time}
  */

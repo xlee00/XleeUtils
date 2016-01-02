@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Xleelib</string>
+    <!-- SettingsUtil -->
+    <string name="one_key_cls_ok">已清理内存</string>
+    <!-- AppUtils -->
+    <string name="app_not_exist">应用不存在或已经删除</string>
+    <string name="not_support">当前固件不支持查看应用详情</string>
+    <string name="launche_failure">启动应用失败</string>
 </resources>
