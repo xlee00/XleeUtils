@@ -4,6 +4,9 @@
     <string name="press_again">再按一次退出</string>
     <string name="warning">警告</string>
     <string name="no_existence">没有此页面</string>
+    <!-- weather -->
+    <string name="month">月</string>
+    <string name="date">日</string>
     <!-- items -->
     <string-array name="demo_items">
         <item>weather</item>

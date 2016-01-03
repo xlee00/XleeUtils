@@ -84,7 +84,7 @@ public class DemoActivity extends Activity {
                 Intent intent = new Intent();
                 switch (position) {
                     case WEATHER_ACTIVITY:
-//                        intent.setClass(MainActivity.this, Weather.class);
+                        intent.setClass(DemoActivity.this, WeatherActivity.class);
                         break;
                     case VERTICAL_VIWEPAGER_ACTIVITY:
                         intent.setClass(DemoActivity.this, VerticalViewPagerDemo.class);

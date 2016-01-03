@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.eric.xlee.utils.R;
+
 /**
  * com.xlee.recyclerview.RecyclerViewAdpater
  *
@@ -49,7 +51,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
      */
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolder vh = new ViewHolder(mLayoutInflater.inflate(android.R.layout.simple_expandable_list_item_1, parent,
+        ViewHolder vh = new ViewHolder(mLayoutInflater.inflate(R.layout.demo_recycler_item, parent,
                 false));
         return vh;
     }
@@ -108,7 +110,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mTxtTitle = (TextView) itemView.findViewById(android.R.id.text1);
+            mTxtTitle = (TextView) itemView.findViewById(R.id.txt_item);
         }
     }
 }

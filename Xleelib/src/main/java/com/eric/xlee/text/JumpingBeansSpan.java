@@ -37,8 +37,8 @@ import java.lang.ref.WeakReference;
     private ValueAnimator jumpAnimator;
 
     public JumpingBeansSpan(@NonNull TextView textView, int loopDuration, int position, int waveCharOffset,
-            float animatedRange) {
-        this.textView = new WeakReference<>(textView);
+                            float animatedRange) {
+        this.textView = new WeakReference<TextView>(textView);
         this.delay = waveCharOffset * position;
         this.loopDuration = loopDuration;
         this.animatedRange = animatedRange;
@@ -85,7 +85,7 @@ import java.lang.ref.WeakReference;
 
     private void updateAnimationFor(@NonNull ValueAnimator animation, @NonNull TextView v) {
         if (isAttachedToHierarchy(v)) {
-            shift = (int) animation.getAnimatedValue();
+            shift = (Integer) animation.getAnimatedValue();
             v.invalidate();
         }
     }
@@ -118,7 +118,7 @@ import java.lang.ref.WeakReference;
      * that covers the full range in a fraction of its input range, and holds on
      * the final value on the rest of the input range. By default, this fraction
      * is 65% of the full range.
-     * 
+     *
      * @see com.eric.xlee.text.JumpingBeans#DEFAULT_ANIMATION_DUTY_CYCLE
      */
     private static class JumpInterpolator implements TimeInterpolator {

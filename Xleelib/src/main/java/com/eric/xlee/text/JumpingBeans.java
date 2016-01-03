@@ -74,7 +74,7 @@ public final class JumpingBeans {
 
     private JumpingBeans(@NonNull JumpingBeansSpan[] beans, @NonNull TextView textView) {
         this.jumpingBeans = beans;
-        this.textView = new WeakReference<>(textView);
+        this.textView = new WeakReference<TextView>(textView);
     }
 
     /**
