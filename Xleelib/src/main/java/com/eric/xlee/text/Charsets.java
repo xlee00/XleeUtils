@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
  *         Create at 26/11/2015 18:09
  */
 public class Charsets {
-    private static final String TAG = "Charsets";
+    private static final String TAG = Charsets.class.getSimpleName();
 
     public static final String ASCII = "ASCII";
     public static final String US_ASCII = "US-ASCII";
