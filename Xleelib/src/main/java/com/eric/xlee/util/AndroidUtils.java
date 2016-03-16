@@ -29,6 +29,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -422,5 +424,21 @@ public class AndroidUtils {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static String printSystemInfo() {
+        Date date = new Date(System.currentTimeMillis());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time = dateFormat.format(date);
+        StringBuilder sb = new StringBuilder();
+        sb.append("--------------------  系统信息  " + time + "  --------------------");
+        sb.append("\nBOARD        :" + android.os.Build.BOARD);
+        sb.append("\nDEVICE       :" + android.os.Build.DEVICE);
+        sb.append("\nPRODUCT      :" + android.os.Build.PRODUCT);
+        sb.append("\nMANUFACTURER :" + android.os.Build.MANUFACTURER);
+        sb.append("\nCODENAME     :" + android.os.Build.VERSION.CODENAME);
+        sb.append("\nRELEASE      :" + android.os.Build.VERSION.RELEASE);
+        // sb.append("\nSDK          :" + android.os.Build.VERSION.SDK);
+        return sb.toString();
     }
 }

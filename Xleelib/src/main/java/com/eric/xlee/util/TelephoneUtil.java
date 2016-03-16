@@ -62,6 +62,5 @@ public class TelephoneUtil {
         sb.append("\nSubscriberId         :" + tm.getSubscriberId());
         sb.append("\nVoiceMailNumber      :" + tm.getVoiceMailNumber());
         return sb.toString();
-
     }
 }

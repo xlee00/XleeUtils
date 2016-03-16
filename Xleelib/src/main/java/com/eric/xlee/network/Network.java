@@ -107,6 +107,20 @@ public class Network {
         return "";
     }
 
+    /**
+     * 获取wifi Mac地址
+     *
+     * @param context
+     * @return
+     */
+    public static String getMacAddress(Context context) {
+        // wifi mac地址
+        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = wifi.getConnectionInfo();
+        String mac = info.getMacAddress();
+        return mac;
+    }
+
     private static String convertIntToIp(int paramInt) {
         return (paramInt & 0xFF) + "." + (0xFF & paramInt >> 8) + "."
                 + (0xFF & paramInt >> 16) + "." + (0xFF & paramInt >> 24);
