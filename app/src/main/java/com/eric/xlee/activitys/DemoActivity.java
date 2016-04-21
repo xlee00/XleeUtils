@@ -63,7 +63,6 @@ public class DemoActivity extends Activity {
 //        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-
         mRecyclerView.addItemDecoration(new DividerGridItemDecoration(this));
         // 设置item动画
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
